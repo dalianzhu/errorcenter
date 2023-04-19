@@ -25,17 +25,15 @@ func (t *TickerDo) LastCallTime() int64 {
 // Do can be called concurrently, and will only be executed once within the duration
 // useful in scenarios such as printing a large number of logs
 func (t *TickerDo) Do(fn func()) {
-	for {
-		now := time.Now().Unix()
-		lastCallTime := t.lastCallTime
-		if now-lastCallTime >= t.du {
-			ok := atomic.CompareAndSwapInt64(&t.lastCallTime, lastCallTime, now)
-			if ok {
-				fn()
-			}
-			return
-		} else {
-			return
+	now := time.Now().Unix()
+	lastCallTime := t.lastCallTime
+	if now-lastCallTime >= t.du {
+		ok := atomic.CompareAndSwapInt64(&t.lastCallTime, lastCallTime, now)
+		if ok {
+			fn()
 		}
+		return
+	} else {
+		return
 	}
 }
