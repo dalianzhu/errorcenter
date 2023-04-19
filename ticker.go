@@ -26,7 +26,7 @@ func (t *TickerDo) LastCallTime() int64 {
 // useful in scenarios such as printing a large number of logs
 func (t *TickerDo) Do(fn func()) {
 	now := time.Now().Unix()
-	lastCallTime := t.lastCallTime
+	lastCallTime := atomic.LoadInt64(&t.lastCallTime)
 	if now-lastCallTime >= t.du {
 		ok := atomic.CompareAndSwapInt64(&t.lastCallTime, lastCallTime, now)
 		if ok {
