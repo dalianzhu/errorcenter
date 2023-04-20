@@ -19,7 +19,7 @@ func Error(errType ErrType, msg string, payload map[string]any) {
 	if ok {
 		customHandler(errType, msg, payload)
 	} else {
-		defaultHandler(errType, msg, payload)
+		DefaultHandler(errType, msg, payload)
 	}
 }
 
@@ -40,9 +40,9 @@ var codeHandlerMap = make(map[ErrType]CodeHandler)
 // CodeHandler users can customize the handling of certain types of errors
 type CodeHandler func(errType ErrType, msg string, payload map[string]any)
 
-// defaultHandler defines general processing,
+// DefaultHandler defines general processing,
 // it will record the number of errors of the same type within 5 minutes and print messages regularly
-var defaultHandler = func(errType ErrType, msg string, payload map[string]any) {
+var DefaultHandler = func(errType ErrType, msg string, payload map[string]any) {
 	key := fmt.Sprintf("errType:%v", errType)
 	counter := GetCounter(key)
 	counter.Add(1)
