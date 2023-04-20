@@ -40,10 +40,15 @@ var globalCounterMapLk sync.Mutex
 // GetCounter if the key does not exist, create a counter.
 // The counter will be checked periodically, and the inactive ones will be recycled.
 func GetCounter(name string) *SlidingWindowCounter {
+	v, ok := globalCounterMap.Load(name)
+	if ok {
+		return v.(*SlidingWindowCounter)
+	}
+
 	globalCounterMapLk.Lock()
 	defer globalCounterMapLk.Unlock()
 
-	v, ok := globalCounterMap.Load(name)
+	v, ok = globalCounterMap.Load(name)
 	if ok {
 		return v.(*SlidingWindowCounter)
 	}
@@ -58,10 +63,14 @@ var globalTickerLk sync.Mutex
 // GetTicker if the key does not exist, create a TickerDo obj.
 // The item will be checked periodically, and the inactive ones will be recycled.
 func GetTicker(name string, duSecs int) *TickerDo {
+	v, ok := globalTickerMap.Load(name)
+	if ok {
+		return v.(*TickerDo)
+	}
 	globalTickerLk.Lock()
 	defer globalTickerLk.Unlock()
 
-	v, ok := globalTickerMap.Load(name)
+	v, ok = globalTickerMap.Load(name)
 	if ok {
 		return v.(*TickerDo)
 	}
