@@ -1,12 +1,18 @@
-`errorcenter` handles errors uniformly in a simple way
+## Project Purpose
+"errorcenter" is to provide a simple way to handle errors in Go programming language.
 
-User can predefine error types and handling.
+Users can define their own error types and corresponding handling methods.
 
-When the `Error` function is called, the predefined processing or default processing will be triggered
+When the function "Error()" is called, the predefined or default error handler will be triggered.
 
-A sliding counter is provided for the default error processing
+It also provides a `sliding counter` to calculate data from the recent few minutes.
+
+Additionally, the `TicketDo` component can consolidate frequently performed operations based on time. Please refer to the comments for more details.
+
+In the `default error handler`, these two components are used to print and handle undefined errors by default.
 
 ## Instructions
+Here's an example code using this component:
 ```go
 var MyErr = ErrType("my error")
 var DefaultErr = ErrType("default error")
