@@ -11,7 +11,9 @@ func NewTickDo(duSecs int) *TickerDo {
 	return t
 }
 
-// TickerDo guarantees the minimum interval for the execution of the Do function
+// TickerDo limits the actual frequency of calls to the "Do" function by defining a time period (du).
+// Within this time period, even if the "Do" function is called multiple times,
+// it will only be executed *once*, and the rest of the calls will be ignored.
 type TickerDo struct {
 	lastCallTime int64
 	du           int64
